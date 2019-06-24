@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: currency
+server:
+  port: 8085
+
+converter:
+  url: https://api.exchangeratesapi.io/latest?base=%s&symbols=%s
