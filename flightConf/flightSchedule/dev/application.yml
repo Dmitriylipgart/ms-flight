@@ -11,7 +11,7 @@ spring:
     url: jdbc:h2:mem:flightSchedule
     platform: h2
     username: username
-    password: password
+    password: {cipher}58cb196e92a4890c65664e8c7da1f288e2830079b4451898f299c73ac67bb4d2
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
