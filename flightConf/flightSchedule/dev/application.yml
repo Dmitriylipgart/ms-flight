@@ -8,7 +8,7 @@ management:
         include: "*"
 spring:
   datasource:
-    url: jdbc:h2:mem:flight-schedule
+    url: jdbc:h2:mem:flightSchedule
     platform: h2
     username: username
     password: password
@@ -18,7 +18,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql: false
         use_sql_comments: false
   h2:

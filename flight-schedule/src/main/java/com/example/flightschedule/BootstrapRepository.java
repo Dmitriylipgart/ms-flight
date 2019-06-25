@@ -22,10 +22,10 @@ public class BootstrapRepository implements CommandLineRunner {
         Flight flight4 = new Flight(4L, "UL-194", "DEL", "TYO", "Srilankan Airlines", "15:10", "18:40");
 
         flightRepository.save(flight1);
+        System.out.println("flight1");
         flightRepository.save(flight2);
         flightRepository.save(flight3);
         flightRepository.save(flight4);
-
     }
 
 }
