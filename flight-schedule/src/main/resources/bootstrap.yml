@@ -9,3 +9,5 @@ eureka:
   client:
     healthcheck:
       enabled: true
+encrypt:
+  key: flight-ms-secret
