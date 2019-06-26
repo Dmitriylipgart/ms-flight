@@ -8,7 +8,7 @@ management:
         include: "*"
 spring:
   datasource:
-    url: jdbc:h2:mem:flightSchedule
+    url: jdbc:h2:mem:flightSchedule;DB_CLOSE_DELAY=-1
     platform: h2
     username: username
     password: "{cipher}58cb196e92a4890c65664e8c7da1f288e2830079b4451898f299c73ac67bb4d2"
