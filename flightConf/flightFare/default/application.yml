@@ -1,8 +1,15 @@
 spring:
   application:
     name: fare
+
 server:
   port: 8086
 eureka:
   client:
     use: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
