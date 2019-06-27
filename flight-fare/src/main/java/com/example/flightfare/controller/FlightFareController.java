@@ -25,6 +25,7 @@ public class FlightFareController {
 
     private final FlightFareRepository repository;
     private final EurekaClient eurekaClient;
+    private final RestTemplate restTemplate;
 
     @Value("${eureka.client.use:false}")
     private boolean useEurekaClient;
@@ -32,10 +33,11 @@ public class FlightFareController {
     @Value("${currency.base:USD}")
     private String baseCurrency;
 
-    public FlightFareController(FlightFareRepository repository, EurekaClient eurekaClient) {
+    public FlightFareController(FlightFareRepository repository, EurekaClient eurekaClient, RestTemplate template) {
         this.repository = repository;
 
         this.eurekaClient = eurekaClient;
+        this.restTemplate = template;
     }
 
     @GetMapping("/{flightCode}/fare/{currency}")
@@ -66,14 +68,13 @@ public class FlightFareController {
             uri = String.format("%s/api/currency/from/{from}/to/{to}", serviceUri);
 
         }else{
-            uri = "http://localhost:8085/api/currency/from/{from}/to/{to}";
+            uri = "http://currency/api/currency/from/{from}/to/{to}";
         }
 
-        RestTemplate template = new RestTemplate();
         Map<String, String> urlPathVariables = new HashMap<>();
         urlPathVariables.put("from", baseCurrency);
         urlPathVariables.put("to", toCurrency);
-        ResponseEntity<BigDecimal> responseEntity = template.getForEntity(uri, BigDecimal.class, urlPathVariables);
+        ResponseEntity<BigDecimal> responseEntity = restTemplate.getForEntity(uri, BigDecimal.class, urlPathVariables);
         return responseEntity.getBody();
     }
 
