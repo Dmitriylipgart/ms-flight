@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      name: geteway
+      uri: http://localhost:8081
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true

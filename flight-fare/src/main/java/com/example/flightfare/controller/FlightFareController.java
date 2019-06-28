@@ -1,10 +1,8 @@
 package com.example.flightfare.controller;
 
 import com.example.flightfare.entity.FlightFare;
+import com.example.flightfare.proxy.CurrencyConversionServiceProxy;
 import com.example.flightfare.repository.FlightFareRepository;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,20 +21,16 @@ import java.util.Map;
 public class FlightFareController {
 
     private final FlightFareRepository repository;
-    private final EurekaClient eurekaClient;
     private final RestTemplate restTemplate;
-
-    @Value("${eureka.client.use:false}")
-    private boolean useEurekaClient;
+    private final CurrencyConversionServiceProxy feignProxy;
 
     @Value("${currency.base:USD}")
     private String baseCurrency;
 
-    public FlightFareController(FlightFareRepository repository, EurekaClient eurekaClient, RestTemplate template) {
+    public FlightFareController(FlightFareRepository repository, RestTemplate template, CurrencyConversionServiceProxy feignProxy) {
         this.repository = repository;
-
-        this.eurekaClient = eurekaClient;
         this.restTemplate = template;
+        this.feignProxy = feignProxy;
     }
 
     @GetMapping("/{flightCode}/fare/{currency}")
@@ -57,25 +50,20 @@ public class FlightFareController {
         return repository.findOne(Example.of(flightFare)).get();
     }
 
+//    private BigDecimal getConversion(String toCurrency){
+//
+//        String uri = "http://currency/api/currency/from/{from}/to/{to}";
+//
+//        Map<String, String> urlPathVariables = new HashMap<>();
+//        urlPathVariables.put("from", baseCurrency);
+//        urlPathVariables.put("to", toCurrency);
+//        ResponseEntity<BigDecimal> responseEntity = restTemplate.getForEntity(uri, BigDecimal.class, urlPathVariables);
+//        return responseEntity.getBody();
+//    }
+
     private BigDecimal getConversion(String toCurrency){
 
-        String uri;
-
-        if(useEurekaClient){
-            Application app = eurekaClient.getApplication("currency");
-            List<InstanceInfo> instances = app.getInstances();
-            String serviceUri = instances.get(0).getHomePageUrl();
-            uri = String.format("%s/api/currency/from/{from}/to/{to}", serviceUri);
-
-        }else{
-            uri = "http://currency/api/currency/from/{from}/to/{to}";
-        }
-
-        Map<String, String> urlPathVariables = new HashMap<>();
-        urlPathVariables.put("from", baseCurrency);
-        urlPathVariables.put("to", toCurrency);
-        ResponseEntity<BigDecimal> responseEntity = restTemplate.getForEntity(uri, BigDecimal.class, urlPathVariables);
-        return responseEntity.getBody();
+       return feignProxy.convertCurrency(baseCurrency, toCurrency);
     }
 
 

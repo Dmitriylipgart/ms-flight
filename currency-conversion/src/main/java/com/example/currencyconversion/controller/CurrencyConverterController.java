@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/api/currency")
+@RequestMapping("/api")
 public class CurrencyConverterController {
 
     private final CurrencyConverterService converterService;
@@ -19,7 +19,7 @@ public class CurrencyConverterController {
     }
 
     @GetMapping("/from/{from}/to/{to}")
-    public BigDecimal converterCurrency(@PathVariable String from, @PathVariable String to){
+    public BigDecimal convertCurrency(@PathVariable String from, @PathVariable String to){
         return converterService.convert(from,  to);
     }
 
