@@ -3,5 +3,11 @@ spring:
     name: gateway
 
 server:
-  port: 8079
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 

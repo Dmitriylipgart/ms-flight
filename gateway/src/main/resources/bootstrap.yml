@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      name: geteway
+      name: gateway
       uri: http://localhost:8081
 
 eureka:
