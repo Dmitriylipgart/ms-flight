@@ -11,3 +11,7 @@ management:
       exposure:
         include: "*"
 
+zuul:
+  routes:
+    currency: "/cc/**"
+  ignored-services: currency
