@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/api")
 public class CurrencyConverterController {
 
     private final CurrencyConverterService converterService;

@@ -6,3 +6,9 @@ server:
 
 converter:
   url: https://api.exchangeratesapi.io/latest?base=%s&symbols=%s
+
+zuul:
+  routes:
+    currency: "/cc/**"
+  ignored-services: currency
+

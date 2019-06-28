@@ -5,19 +5,14 @@ import com.example.flightfare.proxy.CurrencyConversionServiceProxy;
 import com.example.flightfare.repository.FlightFareRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/flight")
 public class FlightFareController {
 
     private final FlightFareRepository repository;
@@ -34,18 +29,18 @@ public class FlightFareController {
     }
 
     @GetMapping("/{flightCode}/fare/{currency}")
-    public FlightFare getSingleTicketFare(@PathVariable String flightCode, @PathVariable String currency){
+    public FlightFare getSingleTicketFare(@PathVariable String flightCode, @PathVariable String currency) {
         FlightFare fare = getFlightFare(flightCode);
         fare.setCurrency(currency);
-        if(!baseCurrency.equals(currency)){
+        if (!baseCurrency.equals(currency)) {
             BigDecimal conversionRate = this.getConversion(currency);
             BigDecimal convertedFare = fare.getFare().multiply(conversionRate);
             fare.setFare(convertedFare);
         }
-        return  fare;
+        return fare;
     }
 
-    private FlightFare getFlightFare(String flightCode){
+    private FlightFare getFlightFare(String flightCode) {
         FlightFare flightFare = new FlightFare(null, flightCode, null, null);
         return repository.findOne(Example.of(flightFare)).get();
     }
@@ -61,9 +56,9 @@ public class FlightFareController {
 //        return responseEntity.getBody();
 //    }
 
-    private BigDecimal getConversion(String toCurrency){
+    private BigDecimal getConversion(String toCurrency) {
 
-       return feignProxy.convertCurrency(baseCurrency, toCurrency);
+        return feignProxy.convertCurrency(baseCurrency, toCurrency);
     }
 
 
