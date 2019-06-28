@@ -12,3 +12,8 @@ zuul:
     currency: "/cc/**"
   ignored-services: currency
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
