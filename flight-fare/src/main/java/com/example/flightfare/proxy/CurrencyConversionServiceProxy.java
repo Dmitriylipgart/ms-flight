@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.math.BigDecimal;
 
 @FeignClient(name="currency")
-@RequestMapping("/api")
+@RequestMapping
 public interface CurrencyConversionServiceProxy {
 
     @GetMapping("/from/{from}/to/{to}")
